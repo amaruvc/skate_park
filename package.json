@@ -1,0 +1,24 @@
+{
+  "name": "skate_park",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Amaru",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
+    "connect-flash": "^0.1.1",
+    "express": "^4.17.3",
+    "express-fileupload": "^1.3.1",
+    "express-session": "^1.17.2",
+    "nodemon": "^2.0.15",
+    "nunjucks": "^3.2.3",
+    "pg": "^8.7.3",
+    "sequelize": "^6.17.0"
+  }
+}
