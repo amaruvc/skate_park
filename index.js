@@ -5,10 +5,13 @@ const bodyParser = require("body-parser");
 const fileupload = require("express-fileupload");
 const session = require("express-session");
 const flash = require("connect-flash");
-
 const app = express();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static("static"));
+
 //Para sincronizar la bd
 async function syncBD() {
   await sql.sync({ force: true });
@@ -16,6 +19,8 @@ async function syncBD() {
 // syncBD();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(flash());
 
 nunjucks.configure("templates", {
   express: app,

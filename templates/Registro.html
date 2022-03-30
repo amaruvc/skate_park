@@ -15,16 +15,21 @@
   </head>
   <body>
     <h1>Skate Park</h1>
+    {% for error in errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong> {{ error }}
+    </div>
+    {% endfor %}
 
     <div class="py-4">
       <h2>Registro</h2>
       <hr class="w-50" />
 
-      <form action="/" method="POST">
+      <form action="/registro" method="POST" enctype="multipart/form-data">
         <div class="form-group row w-50 m-auto">
           <div class="form-group col-12 col-sm-6">
             <label>Email</label>
-            <input class="form-control m-auto" name="email" />
+            <input class="form-control m-auto" name="email" type="email" />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Nombre</label>
@@ -32,15 +37,24 @@
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Password</label>
-            <input class="form-control m-auto" name="password" />
+            <input
+              class="form-control m-auto"
+              name="password"
+              type="password"
+            />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Repita la password</label>
-            <input class="form-control m-auto" name="confirm" />
+            <input class="form-control m-auto" name="confirm" type="password" />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Años de experiencia</label>
-            <input class="form-control m-auto" name="annos" />
+            <input
+              class="form-control m-auto"
+              name="annos"
+              type="number"
+              min="0"
+            />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Especialidad</label>
@@ -48,7 +62,7 @@
           </div>
           <div class="form-group col-12 col-sm-12">
             <label>Foto de perfil</label>
-            <input type="file" name="foto" />
+            <input type="file" name="photo" />
           </div>
         </div>
         <button type="submit" class="btn btn-info mb-3">Registrarme</button>

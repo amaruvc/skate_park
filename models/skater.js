@@ -42,6 +42,7 @@ const Skaters = sql.define("skaters", {
   status: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
 });
 
