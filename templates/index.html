@@ -16,6 +16,12 @@
   <body>
     <h1>Skate Park</h1>
 
+    {% for msg in message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ msg }}
+    </div>
+    {% endfor %}
+
     <div class="py-4">
       <h2>Lista de participantes</h2>
 
@@ -36,11 +42,17 @@
           {% for skater in skaters%}
           <tr>
             <td>{{ skater.id }}</td>
-            <td><img src="/img_usuarios/{{ skater.photo }}" style="width: 100px;"></img></td>
+            <td><img src="/img_usuarios/{{ skater.photo }}" style="width: 40px;"></img></td>
             <td>{{ skater.name }}</td>
             <td>{{ skater.annos_experiencia }}</td>
             <td>{{ skater.specialty }}</td>
-            <td>{{ skater.state }}</td>
+            <td>
+              {% if skater.status %}
+              <span class="fw-bold text-success">Aprobado</span>
+              {% else %}
+              <span class="fw-bold text-warning">En revisión</span>
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -48,6 +60,10 @@
       {% if not user %}
       <a href="/login">Iniciar Sesión</a> |
       <a href="/registro">Registrarme</a>
+      {% else %}
+      <a href="/datos">Datos del perfil</a> |
+      <a href="/admin">Administración</a> |
+      <a href="/logout">Cerrar sesión</a>
       {% endif %}
     </div>
   </body>

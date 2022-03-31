@@ -17,7 +17,7 @@ router.post("/login", async (req, res) => {
 
   const usuario = await Skaters.findOne({ where: { email } });
 
-  const match = await bcrypt.compare(password, usuario?.password);
+  const match = await bcrypt.compare(password, usuario?.password ?? "");
   if (!usuario || !match) {
     req.flash("errors", ["Usuario o contraseña incorrectos"]);
     return res.redirect("/login");
@@ -120,8 +120,8 @@ router.get("/logout", (req, res) => {
 router.get("/", async (req, res) => {
   const skaters = await Skaters.findAll();
   const user = req.session.user;
-  console.log(user);
-  res.render("index.html", { skaters, user });
+  const message = req.flash("message");
+  res.render("index.html", { skaters, user, message });
 });
 
 function protected_routes(req, res, next) {
@@ -141,10 +141,46 @@ router.get("/admin", protected_routes, async (req, res) => {
   res.render("admin.html", { user, users });
 });
 
-router.get("/Datos", protected_routes, (req, res) => {
-  const user = req.session.user;
+router.get("/datos", protected_routes, async (req, res) => {
+  const user = await Skaters.findOne({
+    where: { email: req.session.user.email },
+  });
   const errors = req.flash("errors");
 
   res.render("datos.html", { user, errors });
 });
+
+router.post("/datos", protected_routes, async (req, res) => {
+  const user = await Skaters.findOne({
+    where: { email: req.session.user.email },
+  });
+
+  if (req.body.btn_eliminar === "") {
+    await user.destroy();
+    req.session.user = undefined;
+    req.flash("message", ["Cuenta eliminada correctamente"]);
+    return res.redirect("/");
+  } else {
+    user.name = req.body.name;
+    user.annos_experiencia = req.body.annos;
+    user.specialty = req.body.specialty;
+
+    const password = req.body.password;
+    const confirm = req.body.confirm;
+    if (password) {
+      if (password != confirm) {
+        req.flash("errors", ["La contraseñas no coinciden"]);
+        return res.redirect("/datos");
+      }
+
+      user.password = await bcrypt.hash(password, 10);
+    }
+
+    await user.save();
+
+    req.flash("message", ["Datos actualizados correctamente"]);
+    return res.redirect("/");
+  }
+});
+
 module.exports = router;
