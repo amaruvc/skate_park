@@ -136,9 +136,19 @@ function protected_routes(req, res, next) {
 router.get("/admin", protected_routes, async (req, res) => {
   const user = req.session.user;
   // me traigo a lista de todos los usuarios
-  const users = await Skaters.findAll();
+  const skaters = await Skaters.findAll();
 
-  res.render("admin.html", { user, users });
+  res.render("admin.html", { user, skaters });
+});
+
+router.post("/admin", protected_routes, async (req, res) => {
+  const id = req.body.id;
+  const status = req.body.status;
+
+  const skater = await Skaters.findByPk(id);
+  skater.status = status;
+  await skater.save();
+  res.json({ ok: true });
 });
 
 router.get("/datos", protected_routes, async (req, res) => {
